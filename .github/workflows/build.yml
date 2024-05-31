@@ -1,0 +1,32 @@
+name: Build
+on:
+  push:
+    branches:
+      - '*'
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs:
+      - SonarCloud
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: '17'
+      - name: Build with Maven
+        run: mvn -B package
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: urubu-da-pizza-jar
+          path: |
+            urubu-da-pizza/target/*.jar
+            urubu-da-pizza/target/*.zip
