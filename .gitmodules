@@ -1,0 +1,3 @@
+[submodule "urubu-da-pizza-api"]
+	path = urubu-da-pizza-api
+	url = https://github.com/Chamoouske/urubu-da-pizza-api.git
